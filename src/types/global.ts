@@ -35,11 +35,12 @@ export type SearchedProduct = {
   title: string
   handle: string
   thumbnail: string
-  calculated_price: string
-  sale_price: string
-  regular_price: string
+  calculated_price?: string
+  sale_price?: string
+  regular_price?: string
   created_at: string
   updated_at: string
+  variants: any[]
 }
 
 export type SearchedProducts = {

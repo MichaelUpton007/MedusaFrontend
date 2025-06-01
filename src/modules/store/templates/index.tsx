@@ -30,6 +30,7 @@ export default async function StoreTemplate({
   const { countryCode } = await params
   const { sortBy, page, collection, type, material, price } = await searchParams
   const region = await getRegion(countryCode)
+  console.log('DEBUG region:', region)
 
   if (!region) {
     return notFound()
@@ -39,7 +40,7 @@ export default async function StoreTemplate({
   const filters = await getStoreFilters()
 
   const { results, count } = await search({
-    currency_code: region.currency_code,
+    region_id: region.id,
     order: sortBy,
     page: pageNumber,
     collection: collection?.split(','),

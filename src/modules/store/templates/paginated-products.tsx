@@ -30,6 +30,9 @@ export default async function PaginatedProducts({
         data-testid="products-list"
       >
         {products.map((p) => {
+          const cheapestVariant = p.variants
+            .filter((v) => !!v.calculated_price)
+            .sort((a, b) => a.calculated_price.calculated_amount - b.calculated_price.calculated_amount)[0];
           return (
             <li key={p.id}>
               <ProductTile
@@ -40,10 +43,10 @@ export default async function PaginatedProducts({
                   handle: p.handle,
                   thumbnail: p.thumbnail,
                   calculatedPrice: convertToLocale({
-                    amount: Number(p.calculated_price),
+                    amount: cheapestVariant?.calculated_price?.calculated_amount ?? 0,
                     currency_code: region.currency_code,
                   }),
-                  salePrice: p.sale_price,
+                  salePrice: '', // Optionally use cheapestVariant?.calculated_price?.original_amount
                 }}
                 regionId={region.id}
               />

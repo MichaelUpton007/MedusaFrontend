@@ -7,7 +7,6 @@ export const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KE
 export const PRODUCT_LIMIT = 12
 
 type SearchParams = {
-  currency_code: string
   page?: number
   order?: string
   category_id?: string
@@ -16,10 +15,10 @@ type SearchParams = {
   material?: string[]
   price?: string[]
   query?: string
+  region_id?: string
 }
 
 export async function search({
-  currency_code,
   page,
   order = 'relevance',
   category_id,
@@ -28,6 +27,7 @@ export async function search({
   material,
   price,
   query,
+  region_id,
 }: SearchParams): Promise<SearchedProducts> {
   const sortBy =
     order === 'price_asc'
@@ -38,12 +38,23 @@ export async function search({
           ? '-created_at'
           : order
 
-  const searchParams = new URLSearchParams({
-    currency_code,
-    order: sortBy,
-    offset: ((page - 1) * PRODUCT_LIMIT).toString(),
-    limit: PRODUCT_LIMIT.toString(),
-  })
+  let searchParams: URLSearchParams
+  if (order === 'relevance') {
+    searchParams = new URLSearchParams({
+      offset: ((page - 1) * PRODUCT_LIMIT).toString(),
+      limit: PRODUCT_LIMIT.toString(),
+    })
+  } else {
+    searchParams = new URLSearchParams({
+      order: sortBy,
+      offset: ((page - 1) * PRODUCT_LIMIT).toString(),
+      limit: PRODUCT_LIMIT.toString(),
+    })
+  }
+
+  if (region_id) {
+    searchParams.append('region_id', region_id)
+  }
 
   if (category_id) {
     searchParams.append('category_id[]', category_id)
@@ -93,7 +104,7 @@ export async function search({
   }
 
   const response = await fetch(
-    `${BACKEND_URL}/store/search?${searchParams.toString()}`,
+    `${BACKEND_URL}/store/products?${searchParams.toString()}`,
     {
       headers: {
         'x-publishable-api-key': PUBLISHABLE_API_KEY!,
