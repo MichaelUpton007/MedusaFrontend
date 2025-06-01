@@ -45,6 +45,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'pub-830142e539d846c68f37629e1b2bcfdc.r2.dev',
       },
+      {
+        protocol: 'https',
+        hostname: 'media.tacbay.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.r2.cloudflarestorage.com',
+      },
     ],
   },
 }

@@ -2,8 +2,7 @@ import { safeDecodeURIComponent } from '@lib/util/safe-decode-uri'
 import { SearchedProducts } from 'types/global'
 
 export const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
-export const PUBLISHABLE_API_KEY =
-  process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+export const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 
 export const PRODUCT_LIMIT = 12
 
